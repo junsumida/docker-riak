@@ -1,6 +1,14 @@
 #! /bin/sh
 
 IP_ADDRESS=$(ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
+BACKEND_CONF=`cat << EOS
+multi_backend.default.storage_backend = leveldb\n
+multi_backend.default.leveldb.data_root = \\$(platform_data_dir)/leveldb\n
+multi_backend.bitcask_multi.storage_backend = bitcask\n
+multi_backend.bitcask_multi.bitcask.data_root = /var/lib/riak/bitcask\n
+multi_backend.bitcask_multi.bitcask.expiry = 1h\n
+EOS
+`
 
 # Ensure correct ownership and permissions on volumes
 chown riak:riak /var/lib/riak /var/log/riak
@@ -14,6 +22,9 @@ sed -i.bak "s/riak@127.0.0.1/riak@${IP_ADDRESS}/" /etc/riak/riak.conf
 
 # Ensure the desired Riak backend is set correctly
 sed -i.bak "s/storage_backend = \(.*\)/storage_backend = ${DOCKER_RIAK_BACKEND}/" /etc/riak/riak.conf
+
+sed -e "s/^storage_backend/a ${BACKEND_CONF}" /etc/riak/riak.conf
+
 
 # Start Riak
 exec /sbin/setuser riak "$(ls -d /usr/lib/riak/erts*)/bin/run_erl" "/tmp/riak" \
