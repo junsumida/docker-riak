@@ -1,6 +1,9 @@
 #! /bin/sh
 
 if env | grep -q "DOCKER_RIAK_AUTOMATIC_CLUSTERING=1"; then
+
+  sleep 10 &
+
   # Join node to the cluster
   (sleep 5; if env | grep -q "SEED_PORT_8098_TCP_ADDR"; then
     riak-admin cluster join "riak@${SEED_PORT_8098_TCP_ADDR}" > /dev/null 2>&1

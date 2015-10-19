@@ -29,18 +29,16 @@ RUN \
 RUN mkdir -p /etc/service/riak
 ADD bin/riak.sh /etc/service/riak/run
 
-# Setup automatic clustering
-ADD bin/automatic_clustering.sh /etc/my_init.d/99_automatic_clustering.sh
-
 # Tune Riak configuration settings for the container
 RUN sed -i.bak 's/listener.http.internal = 127.0.0.1/listener.http.internal = 0.0.0.0/' /etc/riak/riak.conf && \
     sed -i.bak 's/listener.protobuf.internal = 127.0.0.1/listener.protobuf.internal = 0.0.0.0/' /etc/riak/riak.conf && \
+    sed -i.bak "s/storage_backend = \(.*\)/storage_backend = multi/" /etc/riak/riak.conf && \
     echo "anti_entropy.concurrency_limit = 1" >> /etc/riak/riak.conf && \
     echo "javascript.map_pool_size = 0" >> /etc/riak/riak.conf && \
     echo "javascript.reduce_pool_size = 0" >> /etc/riak/riak.conf && \
     echo "javascript.hook_pool_size = 0" >> /etc/riak/riak.conf && \
     echo "multi_backend.default.storage_backend = leveldb" >> /etc/riak/riak.conf && \
-    echo "multi_backend.default.leveldb.data_root = \\$(platform_data_dir)/leveldb" >> /etc/riak/riak.conf && \
+    echo "multi_backend.default.leveldb.data_root = \$(platform_data_dir)/leveldb" >> /etc/riak/riak.conf && \
     echo "multi_backend.bitcask_multi.storage_backend = bitcask" >> /etc/riak/riak.conf && \
     echo "multi_backend.bitcask_multi.bitcask.data_root = /var/lib/riak/bitcask" >> /etc/riak/riak.conf && \
     echo "multi_backend.bitcask_multi.bitcask.expiry = 1h" >> /etc/riak/riak.conf
