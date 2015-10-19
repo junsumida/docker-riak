@@ -96,13 +96,13 @@ do
     docker exec ${CONTAINER_ID} riak-admin bucket-type create maps     '{"props":{"datatype":"map"}}'     > /dev/null 2>&1
     docker exec ${CONTAINER_ID} riak-admin bucket-type create sets     '{"props":{"datatype":"set"}}'     > /dev/null 2>&1
     docker exec ${CONTAINER_ID} riak-admin bucket-type create counters '{"props":{"datatype":"counter"}}' > /dev/null 2>&1
-    docker exec ${CONTAINER_ID} riak-admin bucket-type create bitcask_backend '{"props":{"backend":"bitcask"}}' > /dev/null 2>&1
-    #docker exec ${CONTAINER_ID} riak-admin bucket-type create leveldb_backend '{"props":{"backend":"leveldb"}}'
+    docker exec ${CONTAINER_ID} riak-admin bucket-type create bitcask_backend '{"props":{"riak_kv_multi_backend":"bitcask"}}' > /dev/null 2>&1
+    docker exec ${CONTAINER_ID} riak-admin bucket-type create leveldb_backend '{"props":{"backend":"leveldb"}}'
     docker exec ${CONTAINER_ID} riak-admin bucket-type activate maps     > /dev/null 2>&1
     docker exec ${CONTAINER_ID} riak-admin bucket-type activate sets     > /dev/null 2>&1
     docker exec ${CONTAINER_ID} riak-admin bucket-type activate counters > /dev/null 2>&1
     docker exec ${CONTAINER_ID} riak-admin bucket-type activate bitcask_backend > /dev/null 2>&1
-    #docker exec ${CONTAINER_ID} riak-admin bucket-type activate leveldb_backend > /dev/null 2>&1
+    docker exec ${CONTAINER_ID} riak-admin bucket-type activate leveldb_backend > /dev/null 2>&1
   fi
 
   echo " Complete"
