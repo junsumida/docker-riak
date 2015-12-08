@@ -32,7 +32,7 @@ ADD bin/riak.sh /etc/service/riak/run
 # Tune Riak configuration settings for the container
 RUN sed -i.bak 's/listener.http.internal = 127.0.0.1/listener.http.internal = 0.0.0.0/' /etc/riak/riak.conf && \
     sed -i.bak 's/listener.protobuf.internal = 127.0.0.1/listener.protobuf.internal = 0.0.0.0/' /etc/riak/riak.conf && \
-    sed -i.bak "s/storage_backend = \(.*\)/storage_backend = multi/" /etc/riak/riak.conf && \
+    sed -i.bak "s/storage_backend = bitcask/storage_backend = multi/" /etc/riak/riak.conf && \
     echo "anti_entropy.concurrency_limit = 1" >> /etc/riak/riak.conf && \
     echo "javascript.map_pool_size = 0" >> /etc/riak/riak.conf && \
     echo "javascript.reduce_pool_size = 0" >> /etc/riak/riak.conf && \

@@ -59,7 +59,7 @@ do
                -p $publish_pb_port \
                --link "riak01:seed" \
                --name "riak${index}" \
-               -d hectcastro/riak > /dev/null 2>&1
+               -d junsumida/docker-riak > /dev/null 2>&1
   else
     docker run -e "DOCKER_RIAK_CLUSTER_SIZE=${DOCKER_RIAK_CLUSTER_SIZE}" \
                -e "DOCKER_RIAK_AUTOMATIC_CLUSTERING=${DOCKER_RIAK_AUTOMATIC_CLUSTERING}" \
@@ -67,7 +67,7 @@ do
                -p $publish_http_port \
                -p $publish_pb_port \
                --name "riak${index}" \
-               -d hectcastro/riak > /dev/null 2>&1
+               -d junsumida/docker-riak > /dev/null 2>&1
   fi
   echo -n "Starting riak${index}: "
 
